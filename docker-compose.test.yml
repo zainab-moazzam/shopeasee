@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  user-service:
+    build: ./user-service
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=testing
+    depends_on:
+      - user-db
+
+  user-db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=users
+
+  product-service:
+    build: ./product-service
+    ports:
+      - "5001:5001"
+    environment:
+      - NODE_ENV=testing
+    depends_on:
+      - product-db
+
+  product-db:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=password
